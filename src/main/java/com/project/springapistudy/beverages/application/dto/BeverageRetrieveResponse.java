@@ -26,4 +26,20 @@ public class BeverageRetrieveResponse {
 
         return retrieveResponse;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getPrice() {
+        return price;
+    }
+
+    public LocalDateTime getCreated() {
+        return created;
+    }
 }

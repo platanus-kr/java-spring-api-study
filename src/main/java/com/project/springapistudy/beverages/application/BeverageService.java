@@ -1,17 +1,22 @@
 package com.project.springapistudy.beverages.application;
 
 import com.project.springapistudy.beverages.application.dto.BeverageCreateRequest;
+import com.project.springapistudy.beverages.application.dto.BeverageCreateResponse;
 import com.project.springapistudy.beverages.application.dto.BeverageRetrieveResponse;
 import com.project.springapistudy.beverages.application.dto.BeverageUpdateRequest;
-import com.project.springapistudy.beverages.commons.constants.BeverageMessages;
+import com.project.springapistudy.beverages.constants.BeverageMessages;
 import com.project.springapistudy.beverages.domain.Beverage;
 import com.project.springapistudy.beverages.domain.BeverageRepository;
+import com.project.springapistudy.beverages.exception.BeverageBadRequestException;
 import com.project.springapistudy.beverages.exception.BeverageNotFountException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.PersistenceException;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,19 +28,25 @@ public class BeverageService {
     private final BeverageRepository beverageRepository;
 
     @Transactional
-    public void create(BeverageCreateRequest request) {
-        beverageRepository.save(request.to());
+    public BeverageCreateResponse create(BeverageCreateRequest request) {
+        Beverage createItem = null;
+        try {
+            createItem = beverageRepository.save(BeverageCreateRequest.to(request));
+        } catch (DataIntegrityViolationException e) {
+            throw new BeverageBadRequestException(BeverageMessages.BEVERAGE_ALREADY_NAME);
+        }
+        return BeverageCreateResponse.of(createItem);
     }
 
     public BeverageRetrieveResponse retrieve(long id) {
-        Beverage findItem = beverageRepository.findById(id)
+        var findItem = beverageRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new BeverageNotFountException(BeverageMessages.BEVERAGE_NOT_FOUND));
 
         return BeverageRetrieveResponse.of(findItem);
     }
 
     public List<BeverageRetrieveResponse> retrieveAll() {
-        List<Beverage> findAll = beverageRepository.findByDeletedFalseOrderByUpdatedDesc();
+        var findAll = beverageRepository.findByDeletedFalseOrderByUpdatedDesc();
 
         return findAll.stream()
                 .map(BeverageRetrieveResponse::of)
@@ -44,16 +55,16 @@ public class BeverageService {
 
     @Transactional
     public void update(long id, BeverageUpdateRequest request) {
-        Beverage findItem = beverageRepository.findById(id)
+        var findItem = beverageRepository.findById(id)
                 .orElseThrow(() -> new BeverageNotFountException(BeverageMessages.BEVERAGE_NOT_FOUND));
 
-        Beverage requestItem = request.to();
+        var requestItem = request.to();
         findItem.update(requestItem);
     }
 
     @Transactional
     public void delete(long id) {
-        Beverage findItem = beverageRepository.findById(id)
+        var findItem = beverageRepository.findById(id)
                 .orElseThrow(() -> new BeverageNotFountException(BeverageMessages.BEVERAGE_NOT_FOUND));
         findItem.delete();
     }

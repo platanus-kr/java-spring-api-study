@@ -10,22 +10,22 @@ public class BeverageCreateRequest {
     private static final String MINIMUM_PRICE = "가격은 최소 1원 이상이 되야 합니다.";
 
     @NotBlank
-    private String name;
+    private final String name;
 
     @Min(value = 1, message = MINIMUM_PRICE)
-    private Long price;
+    private final Long price;
 
-    private BeverageCreateRequest() {
+    public BeverageCreateRequest(String name, Long price) {
+        this.name = name;
+        this.price = price;
     }
+
 
     public static BeverageCreateRequest of(String name, Long price) {
-        BeverageCreateRequest beverageCreateRequest = new BeverageCreateRequest();
-        beverageCreateRequest.name = name;
-        beverageCreateRequest.price = price;
-        return beverageCreateRequest;
+        return new BeverageCreateRequest(name, price);
     }
 
-    public Beverage to() {
-        return new Beverage(this.name, this.price);
+    public static Beverage to(BeverageCreateRequest request) {
+        return new Beverage(request.name, request.price);
     }
 }

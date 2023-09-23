@@ -1,6 +1,6 @@
 package com.project.springapistudy.beverages.domain;
 
-import com.project.springapistudy.beverages.commons.domain.BaseTime;
+import com.project.springapistudy.commons.domain.BaseTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

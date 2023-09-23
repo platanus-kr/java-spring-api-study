@@ -1,6 +1,6 @@
 package com.project.springapistudy.beverages.exception;
 
-import com.project.springapistudy.beverages.commons.constants.BeverageMessages;
+import com.project.springapistudy.beverages.constants.BeverageMessages;
 
 public class BeverageNotFountException extends BeverageException {
 
