@@ -29,7 +29,7 @@ public class BeverageService {
 
     @Transactional
     public BeverageCreateResponse create(BeverageCreateRequest request) {
-        Beverage createItem = null;
+        Beverage createItem;
         try {
             createItem = beverageRepository.save(BeverageCreateRequest.to(request));
         } catch (DataIntegrityViolationException e) {
