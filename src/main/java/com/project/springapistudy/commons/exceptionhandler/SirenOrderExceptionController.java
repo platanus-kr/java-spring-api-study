@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice(annotations = Controller.class)
-public class CustomExceptionController {
+public class SirenOrderExceptionController {
 
     @ExceptionHandler(BeverageNotFountException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
