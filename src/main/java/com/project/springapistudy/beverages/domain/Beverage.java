@@ -13,16 +13,16 @@ public class Beverage extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
-    private Long price;
+    private long price;
 
     @Column(nullable = false)
-    private Boolean deleted;
+    private boolean deleted;
 
     public Beverage(String name, Long price) {
         this.name = name;
@@ -34,7 +34,7 @@ public class Beverage extends BaseTime {
 
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -42,12 +42,8 @@ public class Beverage extends BaseTime {
         return name;
     }
 
-    public Long getPrice() {
+    public long getPrice() {
         return price;
-    }
-
-    public boolean getDeleted() {
-        return deleted;
     }
 
     public void update(Beverage beverage) {

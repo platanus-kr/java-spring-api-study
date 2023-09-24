@@ -1,8 +1,6 @@
 package com.project.springapistudy.beverage.acceptance;
 
 import com.project.springapistudy.utils.SirenOrderApplicationTest;
-import io.restassured.RestAssured;
-
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,10 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-
-
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,14 +53,15 @@ public class BeverageAcceptanceTest extends SirenOrderApplicationTest {
         @Nested
         class BeverageRetrieve {
 
-            ExtractableResponse<Response> response;
             private final String name = "아이스 도피오";
+            ExtractableResponse<Response> response;
 
             @BeforeEach
             public void 제조음료_조회_설정() {
                 var 요청 = BeverageFixture.제조음료_등록_요청(name, 3000L);
                 response = BeverageSteps.제조음료_생성_API(요청);
             }
+
             @DisplayName("등록된 제조음료를 조회할 수 있다.")
             @Test
             void 제조음료_조회() {
