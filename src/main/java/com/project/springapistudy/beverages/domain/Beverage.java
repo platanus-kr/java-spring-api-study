@@ -1,6 +1,7 @@
 package com.project.springapistudy.beverages.domain;
 
 import com.project.springapistudy.commons.domain.BaseTime;
+import org.hibernate.annotations.Comment;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,15 +14,19 @@ public class Beverage extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Comment("제조음료 식별자")
     private long id;
 
     @Column(nullable = false, unique = true)
+    @Comment("제조음료 이름")
     private String name;
 
     @Column(nullable = false)
+    @Comment("제조음료 가격")
     private long price;
 
     @Column(nullable = false)
+    @Comment("제조음료 삭제여부")
     private boolean deleted;
 
     public Beverage(String name, Long price) {

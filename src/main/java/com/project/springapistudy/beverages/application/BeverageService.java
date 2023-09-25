@@ -15,8 +15,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.PersistenceException;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +33,7 @@ public class BeverageService {
         } catch (DataIntegrityViolationException e) {
             throw new BeverageBadRequestException(BeverageMessages.BEVERAGE_ALREADY_NAME);
         }
+
         return BeverageCreateResponse.of(createItem);
     }
 
@@ -66,6 +65,7 @@ public class BeverageService {
     public void delete(long id) {
         var findItem = beverageRepository.findById(id)
                 .orElseThrow(() -> new BeverageNotFountException(BeverageMessages.BEVERAGE_NOT_FOUND));
+
         findItem.delete();
     }
 }

@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/beverage")
@@ -25,28 +28,36 @@ public class BeverageController {
     private final BeverageService beverageService;
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody BeverageCreateRequest request) {
+    public ResponseEntity<Void> create(@RequestBody @Valid BeverageCreateRequest request) {
         var response = beverageService.create(request);
-        return ResponseEntity.created(URI.create("/beverage/" + response.getId())).build();
+
+        String currentPathUri = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getPath();
+        UriComponents responseUri = UriComponentsBuilder
+                .fromUriString(currentPathUri)
+                .path("/" + response.getId())
+                .build();
+
+        return ResponseEntity.created(responseUri.toUri()).build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BeverageRetrieveResponse> retrieve(@PathVariable("id") final Long id) {
         var response = beverageService.retrieve(id);
+
         return ResponseEntity.ok().body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable("id") final long id, @RequestBody BeverageUpdateRequest request) {
+    public ResponseEntity<Void> update(@PathVariable("id") final long id, @RequestBody @Valid BeverageUpdateRequest request) {
         beverageService.update(id, request);
+
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") final long id) {
         beverageService.delete(id);
+
         return ResponseEntity.noContent().build();
     }
-
-
 }
